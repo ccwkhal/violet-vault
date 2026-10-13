@@ -1,261 +1,753 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Violet Vault — Account Tracker</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#10091c">
+<title>Violet Vault</title>
 <style>
-:root{--bg:#0d0a18;--panel:#171127;--panel2:#201737;--line:#35264f;--text:#f7f2ff;--muted:#b7a9ce;--violet:#a78bfa;--pink:#e879f9;--green:#86efac;--yellow:#fcd34d;--red:#fda4af}
-*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at top left,#24113f 0,transparent 45%),var(--bg);color:var(--text);font:15px/1.5 Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,sans-serif}
-button,input,select{font:inherit}button{cursor:pointer;border:0;border-radius:11px;padding:10px 14px;font-weight:700;background:linear-gradient(120deg,#8b5cf6,#c026d3);color:white}button.secondary{background:#2b2041;border:1px solid var(--line)}button.danger{background:#522137}button:disabled{opacity:.45;cursor:not-allowed}
-input,select{width:100%;background:#100c1e;color:var(--text);border:1px solid var(--line);padding:11px 12px;border-radius:10px;outline:none}input:focus,select:focus{border-color:var(--violet)}label{display:block;color:var(--muted);font-size:13px;margin:12px 0 6px}
-.small{font-size:12px;color:var(--muted)}.muted{color:var(--muted)}.hidden{display:none!important}.brand{font-size:20px;font-weight:850;letter-spacing:.3px}.brand span{color:var(--pink)}.auth-wrap{min-height:100vh;display:grid;place-items:center;padding:22px}.auth-card{width:min(440px,100%);background:#171127ed;border:1px solid var(--line);border-radius:24px;padding:28px;box-shadow:0 24px 90px #0008}.logo{width:56px;height:56px;border-radius:18px;display:grid;place-items:center;background:linear-gradient(135deg,#7c3aed,#d946ef);font-size:26px;margin-bottom:18px}.auth-card h1{font-size:26px;margin:4px 0}.auth-card p{color:var(--muted)}.error{color:var(--red);min-height:22px;font-size:13px;margin-top:8px}.app{min-height:100vh}.topbar{height:72px;display:flex;align-items:center;justify-content:space-between;padding:0 24px;border-bottom:1px solid #ffffff12;background:#0d0a18cc;position:sticky;top:0;z-index:5;backdrop-filter:blur(15px)}.top-left{display:flex;gap:14px;align-items:center}.hamb{font-size:21px;padding:9px 12px}.layout{display:flex;min-height:calc(100vh - 72px)}aside{width:245px;padding:20px 14px;border-right:1px solid #ffffff12;background:#100c1d;flex-shrink:0}nav{display:grid;gap:7px}nav button{background:transparent;text-align:left;color:var(--muted);border:1px solid transparent;font-weight:600}nav button.active,nav button:hover{background:#2b1c45;color:white;border-color:#4a2d70}.nav-foot{margin-top:26px;padding:13px;border-radius:13px;background:#1b1230;color:var(--muted);font-size:12px}main{padding:26px;width:100%;max-width:1500px;margin:0 auto}.page-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:22px}.page-head h1{margin:0;font-size:27px}.page-head p{margin:5px 0;color:var(--muted)}.grid{display:grid;gap:15px}.stats{grid-template-columns:repeat(5,minmax(0,1fr))}.card{background:linear-gradient(145deg,#1c1430,#151020);border:1px solid var(--line);border-radius:17px;padding:18px;min-width:0}.stat-label{font-size:12px;color:var(--muted)}.stat-num{font-size:29px;font-weight:800;margin-top:7px;letter-spacing:-.5px}.stat-icon{width:35px;height:35px;border-radius:11px;background:#3b2460;display:grid;place-items:center;margin-bottom:12px}.charts{grid-template-columns:1.1fr 1fr 1fr;margin-top:16px}.card h3{margin:0 0 14px;font-size:15px}.chart{height:210px;display:flex;align-items:center;justify-content:center}.chart svg{width:100%;height:100%;overflow:visible}.legend{display:flex;gap:12px;flex-wrap:wrap;font-size:11px;color:var(--muted);margin-top:8px}.dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:5px}.section{display:none}.section.active{display:block}.form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 16px}.full{grid-column:1/-1}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}.table-wrap{overflow:auto;margin-top:16px}table{width:100%;border-collapse:collapse;min-width:700px}th,td{text-align:left;padding:12px 10px;border-bottom:1px solid #ffffff12;font-size:13px}th{color:var(--muted);font-weight:600}.pill{display:inline-block;padding:4px 8px;border-radius:20px;font-size:11px;font-weight:700;background:#302348;color:#ddd0ff}.pill.success{background:#123d30;color:var(--green)}.pill.pending{background:#493715;color:var(--yellow)}.pill.rejected{background:#4a1c30;color:var(--red)}.inline-select{min-width:130px;width:auto;padding:7px}.two-col{grid-template-columns:1.1fr .9fr}.earnings{font-size:35px;font-weight:850;margin:10px 0}.calc-line{display:flex;justify-content:space-between;padding:13px 0;border-bottom:1px solid #ffffff12}.notice{padding:12px 14px;border:1px solid #5b3c80;background:#26183c;border-radius:12px;color:#e9ddff;font-size:13px;margin:14px 0}.empty{text-align:center;padding:32px;color:var(--muted)}.mobile-only{display:none}.menu-collapsed aside{display:none}.toast{position:fixed;right:18px;bottom:18px;background:#25163c;border:1px solid #6d42a1;border-radius:12px;padding:12px 16px;z-index:20;box-shadow:0 12px 30px #0007}.footer-note{font-size:12px;color:var(--muted);margin-top:22px}.bulk-output{min-height:180px;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;white-space:pre;overflow:auto}.mode-row{display:flex;gap:12px;flex-wrap:wrap;margin:12px 0}.mode-option{display:flex;gap:8px;align-items:center;border:1px solid var(--line);padding:12px;border-radius:12px;background:#1a1329;flex:1;min-width:220px}.mode-option input{width:auto}.danger-note{font-size:12px;color:#fcd34d;margin-top:8px}
-@media(max-width:1100px){.stats{grid-template-columns:repeat(3,minmax(0,1fr))}.charts{grid-template-columns:1fr 1fr}.charts .card:first-child{grid-column:1/-1}}
-@media(max-width:760px){.topbar{padding:0 14px}aside{position:fixed;top:72px;bottom:0;left:0;z-index:8;box-shadow:15px 0 40px #0007;width:250px}.layout{display:block}main{padding:18px 13px}.stats{grid-template-columns:repeat(2,minmax(0,1fr))}.charts,.two-col{grid-template-columns:1fr}.charts .card:first-child{grid-column:auto}.form-grid{grid-template-columns:1fr}.full{grid-column:auto}.page-head h1{font-size:23px}.mobile-only{display:block}.topbar .small{display:none}}
+:root {
+  --bg:#0d0815;
+  --panel:#171022;
+  --panel2:#211532;
+  --line:#392452;
+  --text:#f5edff;
+  --muted:#b8a6cb;
+  --purple:#9955f5;
+  --pink:#d52de2;
+  --green:#55d6a1;
+  --red:#ff718b;
+  --yellow:#ffd36b;
+}
+* { box-sizing:border-box }
+body {
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
+  font:15px/1.5 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+}
+button,input,select,textarea { font:inherit }
+button {
+  cursor:pointer;
+  border:0;
+  border-radius:12px;
+  padding:12px 16px;
+  background:var(--panel2);
+  color:var(--text);
+  font-weight:700;
+}
+button.primary {
+  background:linear-gradient(110deg,var(--purple),var(--pink));
+}
+button:disabled { opacity:.5;cursor:not-allowed }
+input,select,textarea {
+  width:100%;
+  background:#100b1a;
+  border:1px solid var(--line);
+  border-radius:11px;
+  padding:13px;
+  color:var(--text);
+  outline:none;
+}
+input:focus,select:focus,textarea:focus { border-color:#ad7aff }
+label {
+  display:block;
+  color:var(--muted);
+  font-size:13px;
+  font-weight:650;
+  margin:0 0 6px;
+}
+.muted { color:var(--muted) }
+.small { font-size:12px }
+.hidden { display:none!important }
+.topbar {
+  height:76px;
+  border-bottom:1px solid #2b1b3b;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 22px;
+  position:sticky;
+  top:0;
+  background:#100a19f5;
+  backdrop-filter:blur(12px);
+  z-index:5;
+}
+.brand { font-weight:950;font-size:24px;letter-spacing:.5px }
+.brand span { color:#d86bea }
+.top-right { display:flex;align-items:center;gap:10px }
+.layout { display:flex;min-height:calc(100vh - 76px) }
+aside {
+  width:255px;
+  flex-shrink:0;
+  border-right:1px solid #2b1b3b;
+  padding:22px 14px;
+  background:#100a19;
+}
+aside button {
+  display:block;
+  width:100%;
+  text-align:left;
+  background:transparent;
+  margin:5px 0;
+  color:var(--muted);
+}
+aside button.active,aside button:hover {
+  background:#2c1b42;
+  color:white;
+  outline:1px solid #5e3682;
+}
+.workspace {
+  padding:30px;
+  width:100%;
+  max-width:1500px;
+  margin:0 auto;
+}
+.page-head h1 { font-size:30px;margin:0 0 5px }
+.page-head p { color:var(--muted);margin:0 0 22px }
+.grid {
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:15px;
+}
+.grid.two { grid-template-columns:repeat(2,minmax(0,1fr)) }
+.card {
+  background:linear-gradient(145deg,#1a1226,#130d1e);
+  border:1px solid var(--line);
+  border-radius:19px;
+  padding:20px;
+  margin-bottom:16px;
+  min-width:0;
+}
+.stat { font-size:30px;font-weight:900;margin-top:4px }
+.stat-label { color:var(--muted);font-weight:650 }
+.card h2,.card h3 { margin:0 0 14px }
+.form-grid {
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:14px;
+}
+.field { min-width:0 }
+.actions { display:flex;gap:9px;flex-wrap:wrap;margin-top:14px }
+.notice {
+  border:1px solid #66408c;
+  background:#281a3b;
+  color:#e9ddf8;
+  padding:14px 16px;
+  border-radius:14px;
+  margin-bottom:17px;
+}
+.table-wrap { overflow:auto }
+table { width:100%;border-collapse:collapse;min-width:600px }
+th,td {
+  text-align:left;
+  padding:12px 10px;
+  border-bottom:1px solid #332342;
+  font-size:13px;
+}
+th { color:var(--muted);font-weight:750 }
+.pill {
+  display:inline-block;
+  border-radius:999px;
+  padding:4px 9px;
+  font-size:12px;
+  font-weight:750;
+  background:#332541;
+}
+.pill.Pending { color:var(--yellow) }
+.pill.Success { color:var(--green) }
+.pill.Not-Accepted { color:var(--red) }
+.chart {
+  display:flex;
+  align-items:end;
+  gap:12px;
+  height:155px;
+  padding:12px 6px 0;
+  border-bottom:1px solid var(--line);
+}
+.chart-col {
+  display:flex;
+  align-items:center;
+  flex-direction:column;
+  justify-content:end;
+  gap:6px;
+  flex:1;
+  height:100%;
+  min-width:0;
+}
+.chart-bar {
+  width:min(35px,75%);
+  background:linear-gradient(180deg,var(--pink),var(--purple));
+  border-radius:7px 7px 2px 2px;
+  min-height:3px;
+}
+.chart-label { font-size:11px;color:var(--muted) }
+.auth-wrap {
+  min-height:100vh;
+  display:grid;
+  place-items:center;
+  padding:20px;
+  background:radial-gradient(ellipse at top,#29133d 0%,var(--bg) 55%);
+}
+.auth-card {
+  width:min(460px,100%);
+  border:1px solid var(--line);
+  border-radius:23px;
+  padding:27px;
+  background:#171022;
+}
+.auth-card h1 { margin:0 0 4px;font-size:29px }
+.auth-card .field { margin-top:14px }
+.auth-card .actions button { flex:1 }
+.footer-note { margin-top:14px;font-size:12px;color:var(--muted) }
+.menu-toggle { display:none }
+.empty { text-align:center;padding:25px;color:var(--muted) }
+.toast {
+  position:fixed;
+  bottom:18px;
+  left:50%;
+  transform:translateX(-50%);
+  background:#2b1b3d;
+  border:1px solid #66408c;
+  padding:12px 18px;
+  border-radius:12px;
+  z-index:10;
+  max-width:90vw;
+  box-shadow:0 8px 35px #0008;
+}
+.section { display:none }
+.section.active { display:block }
+@media(max-width:900px) {
+  .grid { grid-template-columns:repeat(2,minmax(0,1fr)) }
+  .layout aside {
+    position:fixed;
+    z-index:6;
+    top:76px;
+    bottom:0;
+    left:0;
+    transform:translateX(-105%);
+    transition:.2s;
+    box-shadow:15px 0 30px #0005;
+  }
+  .layout aside.open { transform:translateX(0) }
+  .menu-toggle { display:inline-block }
+  .workspace { padding:22px 15px }
+  .brand { font-size:21px }
+}
+@media(max-width:560px) {
+  .grid,.grid.two,.form-grid { grid-template-columns:1fr }
+  .topbar { padding:0 12px;height:68px }
+  .layout { min-height:calc(100vh - 68px) }
+  .layout aside { top:68px }
+  .workspace { padding:20px 12px }
+  .page-head h1 { font-size:25px }
+  .card { padding:16px }
+  .top-right .user-tag { display:none }
+  .stat { font-size:27px }
+}
 </style>
 </head>
 <body>
+
 <div id="authView" class="auth-wrap">
   <div class="auth-card">
-    <div class="logo">✦</div><div class="brand">VIOLET <span>VAULT</span></div>
-    <h1 id="authTitle">Welcome back</h1>
-    <p id="authSubtitle">Sign in to your account tracker.</p>
-    <form id="authForm">
-      <label for="telegram">Telegram username</label><input id="telegram" autocomplete="username" placeholder="@yourusername" required maxlength="33">
-      <label for="password">Password</label><input id="password" type="password" autocomplete="current-password" minlength="4" maxlength="16" required placeholder="4–16 characters">
-      <div id="confirmWrap" class="hidden"><label for="confirmPassword">Confirm password</label><input id="confirmPassword" type="password" minlength="4" maxlength="16" placeholder="Re-enter your password"></div>
-      <div id="authError" class="error" role="alert"></div>
-      <button id="authSubmit" style="width:100%;margin-top:5px" type="submit">Sign in</button>
+    <div class="brand">VIOLET <span>VAULT</span></div>
+    <p class="muted">Your submission and review dashboard</p>
+    <div class="notice small">
+      Use this tracker only for records you are authorized to manage.
+      Never enter account passwords, financial credentials, or actual PIN codes.
+    </div>
+
+    <div id="loginFields">
+      <div class="field">
+        <label for="loginUser">Telegram username</label>
+        <input id="loginUser" autocomplete="username" placeholder="@yourusername">
+      </div>
+      <div class="field">
+        <label for="loginPass">Local demo password</label>
+        <input id="loginPass" type="password" autocomplete="current-password" placeholder="4–16 characters">
+      </div>
+      <div class="actions">
+        <button class="primary" id="loginBtn">Log in</button>
+        <button id="showSignup">Create account</button>
+      </div>
+    </div>
+
+    <div id="signupFields" class="hidden">
+      <div class="field">
+        <label for="signupUser">Telegram username</label>
+        <input id="signupUser" autocomplete="username" placeholder="@yourusername">
+      </div>
+      <div class="field">
+        <label for="signupPass">Create password (4–16 characters)</label>
+        <input id="signupPass" type="password" minlength="4" maxlength="16" autocomplete="new-password">
+      </div>
+      <div class="field">
+        <label for="signupConfirm">Confirm password</label>
+        <input id="signupConfirm" type="password" minlength="4" maxlength="16" autocomplete="new-password">
+      </div>
+      <div class="actions">
+        <button class="primary" id="signupBtn">Create account</button>
+        <button id="showLogin">Back to login</button>
+      </div>
+    </div>
+    <p class="footer-note">
+      Prototype: login is stored in this browser only. It is not suitable for protecting real private data.
+    </p>
+  </div>
+</div>
+
+<div id="appView" class="hidden">
+<header class="topbar">
+  <div style="display:flex;align-items:center;gap:13px">
+    <button class="menu-toggle" id="menuToggle" aria-label="Open menu">☰</button>
+    <div class="brand">VIOLET <span>VAULT</span></div>
+  </div>
+  <div class="top-right">
+    <span id="currentUser" class="user-tag muted">@user</span>
+    <button id="logoutBtn">Log out</button>
+  </div>
+</header>
+
+<div class="layout">
+<aside id="sidebar">
+  <button class="nav active" data-section="dashboard">◇ &nbsp; Home dashboard</button>
+  <button class="nav" data-section="tracker">▦ &nbsp; Submission tracker</button>
+  <button class="nav" data-section="calculator">◉ &nbsp; Earnings calculator</button>
+  <button class="nav" data-section="payout">↗ &nbsp; Payout request</button>
+  <button class="nav" data-section="admin">⚙ &nbsp; Admin review</button>
+  <div class="card" style="margin-top:22px;padding:14px">
+    <b class="small">✦ Your workspace</b>
+    <p class="muted small">Google Sheets connection when configured. Demo login remains browser-only.</p>
+  </div>
+</aside>
+
+<main class="workspace">
+<section id="dashboard" class="section active">
+  <div class="page-head">
+    <h1>Home dashboard</h1>
+    <p>Overview of submissions and review progress.</p>
+  </div>
+  <div id="connectionNotice" class="notice">Backend has not been checked yet.</div>
+  <div class="grid">
+    <div class="card"><div class="stat-label">Total submissions</div><div class="stat" id="statTotal">0</div></div>
+    <div class="card"><div class="stat-label">Success</div><div class="stat" id="statSuccess">0</div></div>
+    <div class="card"><div class="stat-label">Not accepted</div><div class="stat" id="statRejected">0</div></div>
+    <div class="card"><div class="stat-label">PIN present</div><div class="stat" id="statPinYes">0</div></div>
+    <div class="card"><div class="stat-label">No PIN present</div><div class="stat" id="statPinNo">0</div></div>
+    <div class="card"><div class="stat-label">Pending review</div><div class="stat" id="statPending">0</div></div>
+  </div>
+  <div class="grid two">
+    <div class="card"><h3>Review status</h3><div id="statusChart" class="chart"></div></div>
+    <div class="card"><h3>PIN presence</h3><div id="pinChart" class="chart"></div></div>
+  </div>
+  <div class="card"><h3>Submission activity</h3><div id="activityChart" class="chart"></div></div>
+  <div class="actions">
+    <button class="primary" id="checkConnection">Check connection</button>
+    <button id="refreshBtn">Refresh records</button>
+  </div>
+</section>
+
+<section id="tracker" class="section">
+  <div class="page-head">
+    <h1>Submission tracker</h1>
+    <p>Record non-sensitive details and follow admin review status.</p>
+  </div>
+  <div class="notice">
+    This form does not collect account passwords or actual PIN codes.
+    Review status is controlled by the admin in Google Sheets.
+  </div>
+  <div class="card">
+    <h2>Add submission</h2>
+    <form id="recordForm">
+      <div class="form-grid">
+        <div class="field">
+          <label for="phone">Phone number (authorized use only)</label>
+          <input id="phone" type="tel" inputmode="tel" maxlength="20" placeholder="Contact/reference number" required>
+        </div>
+        <div class="field">
+          <label for="pinPresent">PIN presence</label>
+          <select id="pinPresent" required>
+            <option value="">Choose one…</option>
+            <option value="yes">PIN present</option>
+            <option value="no">No PIN present</option>
+          </select>
+        </div>
+      </div>
+      <div class="actions">
+        <button class="primary" type="submit" id="submitBtn">＋ Submit record</button>
+        <button type="button" id="exportBtn">Export TXT</button>
+      </div>
     </form>
-    <p class="small" style="margin-bottom:0"><span id="toggleText">New here?</span> <a href="#" id="toggleAuth" style="color:#e879f9">Create an account</a></p>
-    <div class="notice">Prototype only: sign-in details are saved in this browser. Do not use a password you use elsewhere.</div>
   </div>
-</div>
-<div id="appView" class="app hidden">
-  <header class="topbar"><div class="top-left"><button class="secondary hamb" id="menuToggle" aria-label="Toggle menu">☰</button><div class="brand">VIOLET <span>VAULT</span></div></div><div style="display:flex;align-items:center;gap:12px"><span class="small" id="currentUser"></span><button class="secondary" id="logoutBtn">Log out</button></div></header>
-  <div class="layout" id="layout">
-    <aside id="sidebar"><nav id="nav">
-      <button class="active" data-page="home">◈ &nbsp; Home dashboard</button>
-      <button data-page="bingo">▦ &nbsp; BingoPlus tracker</button>
-      <button data-page="bulk">⌘ &nbsp; Bulk encode</button>
-      <button data-page="calculator">◉ &nbsp; Earnings calculator</button>
-      <button data-page="payout">↗ &nbsp; Payout</button>
-      <button data-page="admin">⚙ &nbsp; Admin review</button>
-    </nav><div class="nav-foot">✦ Your workspace<br><br>Local prototype · data stays in this browser.</div></aside>
-    <main>
-      <section id="page-home" class="section active">
-        <div class="page-head"><div><h1>Dashboard overview</h1><p>Here's a quick look at your account activity.</p></div><span class="pill">LIVE · LOCAL DATA</span></div>
-        <div class="grid stats">
-          <div class="card"><div class="stat-icon">▦</div><div class="stat-label">Total accounts</div><div class="stat-num" id="statTotal">0</div></div>
-          <div class="card"><div class="stat-icon">✓</div><div class="stat-label">Successful</div><div class="stat-num" id="statSuccess">0</div></div>
-          <div class="card"><div class="stat-icon">×</div><div class="stat-label">Not accepted</div><div class="stat-num" id="statRejected">0</div></div>
-          <div class="card"><div class="stat-icon">♧</div><div class="stat-label">With PIN</div><div class="stat-num" id="statWithPin">0</div></div>
-          <div class="card"><div class="stat-icon">○</div><div class="stat-label">Without PIN</div><div class="stat-num" id="statWithoutPin">0</div></div>
-        </div>
-        <div class="grid charts">
-          <div class="card"><h3>Account submissions · last 7 days</h3><div class="chart" id="trendChart"></div><div class="legend"><span><i class="dot" style="background:#a78bfa"></i>Accounts submitted</span></div></div>
-          <div class="card"><h3>Status distribution</h3><div class="chart" id="statusChart"></div><div class="legend"><span><i class="dot" style="background:#86efac"></i>Success</span><span><i class="dot" style="background:#fcd34d"></i>Pending</span><span><i class="dot" style="background:#fda4af"></i>Not accepted</span></div></div>
-          <div class="card"><h3>PIN status</h3><div class="chart" id="pinChart"></div><div class="legend"><span><i class="dot" style="background:#e879f9"></i>With PIN</span><span><i class="dot" style="background:#8b5cf6"></i>Without PIN</span></div></div>
-        </div>
-        <div class="footer-note">Charts and totals refresh automatically when tracker statuses change.</div>
-      </section>
-      <section id="page-bingo" class="section">
-        <div class="page-head"><div><h1>BingoPlus tracker</h1><p>Record account references and monitor review status.</p></div></div>
-        <div class="notice">For your safety, this prototype does not collect or export account passwords or PIN codes. Record only information you are authorized to manage. Phone numbers are masked in the table and TXT export.</div>
-        <div class="card"><h3>Add account record</h3><form id="accountForm" class="form-grid">
-          <div><label for="accountPhone">Phone number (optional / reference)</label><input id="accountPhone" inputmode="tel" maxlength="24" placeholder="e.g. 09••••••123"></div>
-          <div><label for="pinStatus">PIN status</label><select id="pinStatus"><option value="without">Without PIN · ₱10 rate</option><option value="with">With PIN · ₱13 rate</option></select></div>
-          <div><label for="accountRef">Account reference (required)</label><input id="accountRef" required maxlength="50" placeholder="Your own reference ID"></div>
-          <div><label for="accountStatus">Initial status</label><select id="accountStatus"><option>Pending</option><option>Success</option><option>Not Accepted</option></select></div>
-          <div class="full actions"><button type="submit">＋ Add to tracker</button><button class="secondary" type="button" id="exportTxt">Download TXT</button></div>
-        </form></div>
-        <div class="card" style="margin-top:16px"><div class="page-head" style="margin-bottom:0"><div><h3 style="margin:0">Submitted records</h3><p id="recordCount">0 records</p></div><input id="searchRecords" style="max-width:240px" placeholder="Search reference…" aria-label="Search records"></div>
-          <div class="table-wrap"><table><thead><tr><th>Reference</th><th>Phone</th><th>PIN status</th><th>Rate</th><th>Status</th><th>Submitted</th><th>Action</th></tr></thead><tbody id="accountRows"></tbody></table></div>
-          <div id="emptyAccounts" class="empty">No records yet. Add your first account above.</div>
-        </div>
-      </section>
-      <section id="page-bulk" class="section">
-        <div class="page-head"><div><h1>Bulk Encode</h1><p>Encode test strings in batches without saving them to your tracker.</p></div><span class="pill">SESSION ONLY</span></div>
-        <div class="notice">Important: Base64 is only an encoding format, not encryption or password protection. Do not enter real account passwords, PINs, or other secrets. This tool runs in your browser and does not save its inputs.</div>
-        <div class="card">
-          <h3>Batch settings</h3>
-          <div class="form-grid">
-            <div><label for="bulkCount">Bulk number (how many entries)</label><input id="bulkCount" type="number" min="1" max="500" value="5" required></div>
-            <div><label for="bulkMode">Password/text mode</label><select id="bulkMode"><option value="same">Same text for every entry</option><option value="different">Different text for every entry</option></select></div>
-            <div id="bulkSameWrap" class="full"><label for="bulkSameText">Input same test text</label><input id="bulkSameText" type="password" maxlength="500" placeholder="Enter dummy/test text only"></div>
-            <div id="bulkDifferentWrap" class="full hidden"><label for="bulkDifferentText">Enter different test texts (one per line)</label><textarea id="bulkDifferentText" rows="7" maxlength="10000" placeholder="test-text-001&#10;test-text-002&#10;test-text-003"></textarea><p class="small">Enter exactly the number of lines specified above. Each line will be encoded separately.</p></div>
-          </div>
-          <div class="actions"><button id="runBulkEncode" type="button">Encode batch</button><button id="clearBulk" type="button" class="secondary">Clear</button></div>
-          <div class="error" id="bulkError"></div>
-        </div>
-        <div class="card" style="margin-top:16px">
-          <div class="page-head" style="margin-bottom:0"><div><h3 style="margin:0">Encoded results</h3><p id="bulkResultCount">No batch generated</p></div><div class="actions" style="margin-top:0"><button class="secondary" type="button" id="copyBulk">Copy results</button><button class="secondary" type="button" id="downloadBulk">Download TXT</button></div></div>
-          <textarea id="bulkOutput" class="bulk-output" rows="10" readonly placeholder="Your encoded results will appear here."></textarea>
-        </div>
-      </section>
-      <section id="page-calculator" class="section">
-        <div class="page-head"><div><h1>Earnings calculator</h1><p>Estimate earnings from account PIN status.</p></div></div>
-        <div class="grid two-col">
-          <div class="card"><h3>Rate breakdown</h3><div class="calc-line"><span class="muted">Accounts without PIN × ₱10</span><strong id="calcWithout">0 × ₱10 = ₱0</strong></div><div class="calc-line"><span class="muted">Accounts with PIN × ₱13</span><strong id="calcWith">0 × ₱13 = ₱0</strong></div><div class="calc-line"><span>All tracked accounts</span><strong id="calcCount">0</strong></div><p class="small">The estimate uses all submitted records, regardless of status. Confirm your actual payout rules with the authorized administrator.</p></div>
-          <div class="card"><div class="stat-label">Estimated total earnings</div><div class="earnings" id="calcTotal">₱0</div><div class="notice">Your payout request cannot exceed this estimated total in this local demo. This is not a payment processor and does not send money.</div><button id="goPayout">Request payout →</button></div>
-        </div>
-      </section>
-      <section id="page-payout" class="section">
-        <div class="page-head"><div><h1>Payout request</h1><p>Submit your GCash payout details for review.</p></div></div>
-        <div class="grid two-col">
-          <div class="card"><h3>Request a cash-out</h3><form id="payoutForm">
-            <label for="gcashNumber">GCash number</label><input id="gcashNumber" inputmode="tel" required maxlength="20" placeholder="09XXXXXXXXX">
-            <label for="gcashName">GCash account name</label><input id="gcashName" required maxlength="80" placeholder="Name registered with GCash">
-            <label for="payoutAmount">Amount (PHP)</label><input id="payoutAmount" type="number" required min="1" step="1" placeholder="Enter amount">
-            <div class="small" style="margin-top:8px">Estimated available earnings: <strong id="availableAmount">₱0</strong></div>
-            <div class="error" id="payoutError"></div><button type="submit" style="margin-top:12px">Submit payout request</button>
-          </form></div>
-          <div class="card"><h3>Request status</h3><div id="payoutConfirmation" class="notice">After submitting, your request will appear here for review.</div><div class="table-wrap"><table style="min-width:400px"><thead><tr><th>Amount</th><th>Status</th><th>Date</th></tr></thead><tbody id="myPayoutRows"></tbody></table></div><div id="emptyPayouts" class="empty">No payout requests yet.</div></div>
-        </div>
-      </section>
-      <section id="page-admin" class="section">
-        <div class="page-head"><div><h1>Admin review</h1><p>Demo controls for updating account and payout statuses.</p></div><span class="pill pending">DEMO ONLY</span></div>
-        <div class="notice">This prototype has no real administrator authentication. Anyone using this browser profile can access this screen. Do not use it for real payout approvals or sensitive data.</div>
-        <div class="card"><h3>Account status review</h3><div class="table-wrap"><table><thead><tr><th>Owner</th><th>Reference</th><th>PIN status</th><th>Status</th></tr></thead><tbody id="adminAccountRows"></tbody></table></div><div id="emptyAdminAccounts" class="empty">No account records to review.</div></div>
-        <div class="card" style="margin-top:16px"><h3>Payout requests</h3><div class="table-wrap"><table><thead><tr><th>Owner</th><th>GCash name</th><th>GCash number</th><th>Amount</th><th>Status</th></tr></thead><tbody id="adminPayoutRows"></tbody></table></div><div id="emptyAdminPayouts" class="empty">No payout requests to review.</div></div>
-      </section>
-    </main>
+  <div class="card">
+    <div style="display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap">
+      <div><h2 style="margin:0">Submitted records</h2><p class="muted" id="recordCount">0 records</p></div>
+      <input id="searchRecords" style="max-width:280px" placeholder="Search phone or ID">
+    </div>
+    <div class="table-wrap" style="margin-top:10px">
+      <table>
+        <thead><tr><th>Submission ID</th><th>Phone</th><th>PIN present?</th><th>Review status</th><th>Submitted</th></tr></thead>
+        <tbody id="recordsBody"></tbody>
+      </table>
+    </div>
+    <div id="emptyRecords" class="empty">No submissions yet.</div>
   </div>
+</section>
+
+<section id="calculator" class="section">
+  <div class="page-head"><h1>Earnings calculator</h1><p>Estimate totals using configured rates.</p></div>
+  <div class="grid two">
+    <div class="card">
+      <h3>No PIN rate</h3><div class="stat">₱10</div>
+      <label for="noPinCount">Number of no-PIN records</label>
+      <input id="noPinCount" type="number" min="0" step="1" value="0">
+    </div>
+    <div class="card">
+      <h3>PIN-present rate</h3><div class="stat">₱13</div>
+      <label for="withPinCount">Number of PIN-present records</label>
+      <input id="withPinCount" type="number" min="0" step="1" value="0">
+    </div>
+  </div>
+  <div class="card">
+    <div class="muted">Estimated total</div>
+    <div class="stat" id="earningsTotal">₱0.00</div>
+    <p class="muted small">This is a local estimate, not a verified payment or guarantee.</p>
+  </div>
+</section>
+
+<section id="payout" class="section">
+  <div class="page-head"><h1>Payout request</h1><p>Submit a request for manual review.</p></div>
+  <div class="notice">Never enter bank passwords, OTPs, or authentication codes.</div>
+  <div class="card">
+    <form id="payoutForm">
+      <div class="form-grid">
+        <div class="field">
+          <label for="gcashName">GCash account name</label>
+          <input id="gcashName" maxlength="80" required>
+        </div>
+        <div class="field">
+          <label for="gcashNumber">GCash number</label>
+          <input id="gcashNumber" type="tel" inputmode="tel" maxlength="20" required>
+        </div>
+        <div class="field">
+          <label for="payoutAmount">Amount requested (₱)</label>
+          <input id="payoutAmount" type="number" min="1" step="1" required>
+        </div>
+      </div>
+      <div class="actions"><button class="primary" type="submit">Submit payout request</button></div>
+    </form>
+  </div>
+  <div class="card"><h3>Request history</h3><div id="payoutHistory" class="muted">No requests yet.</div></div>
+</section>
+
+<section id="admin" class="section">
+  <div class="page-head">
+    <h1>Admin review</h1>
+    <p>Review status is edited directly in Google Sheets.</p>
+  </div>
+  <div class="notice">This section is not a secure admin login. Make status changes in the private spreadsheet.</div>
+  <div class="card">
+    <h3>Backend setup</h3>
+    <p class="muted">The endpoint is used to submit records. The status should be changed by the authorized admin in Google Sheets.</p>
+    <label for="apiUrl">Apps Script web app URL</label>
+    <input id="apiUrl" value="https://script.google.com/macros/s/AKfycbxXv-4BKY97mob6-Rn-4Bc6KYLhfDE2eip90yRxXuAXPTOGdvDFfLtaWB3UJzAjux6Z7Q/exec">
+    <div class="actions">
+      <button class="primary" id="saveApi">Save endpoint</button>
+      <button id="testApi">Test endpoint</button>
+    </div>
+    <p id="apiTestResult" class="muted small"></p>
+  </div>
+  <div class="card">
+    <h3>Update review status</h3>
+    <ol class="muted">
+      <li>Open the private Google Spreadsheet.</li>
+      <li>Find the submission row.</li>
+      <li>Update the Review Status column to Pending, Success, or Not Accepted.</li>
+    </ol>
+    <a href="https://docs.google.com/spreadsheets/d/1Bcta7nStl4DNR7Ri0squ9T2kWaulRUGXu-FwoWvRVa0/edit" target="_blank" rel="noopener" style="color:#dba7ff">Open Violet Vault Database ↗</a>
+  </div>
+</section>
+</main>
 </div>
+</div>
+
 <div id="toast" class="toast hidden" role="status"></div>
+
 <script>
-(() => {
-  'use strict';
-  const $ = id => document.getElementById(id);
-  const DB_KEY = 'violetVaultPrototype_v1';
-  const SESSION_KEY = 'violetVaultSession_v1';
-  let isSignup = false;
-  let toastTimer;
-  const today = () => new Date().toISOString();
-  const money = n => '₱' + Number(n || 0).toLocaleString('en-PH',{maximumFractionDigits:0});
-  const safe = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-  function readDB(){try{return JSON.parse(localStorage.getItem(DB_KEY)) || {users:[],accounts:[],payouts:[]}}catch{return {users:[],accounts:[],payouts:[]}}}
-  function saveDB(db){localStorage.setItem(DB_KEY,JSON.stringify(db))}
-  function session(){try{return JSON.parse(sessionStorage.getItem(SESSION_KEY))}catch{return null}}
-  function setSession(u){sessionStorage.setItem(SESSION_KEY,JSON.stringify({username:u.username}))}
-  function currentUsername(){return session()?.username || null}
-  function normalizeUsername(v){return v.trim().replace(/^@/,'').toLowerCase()}
-  function notify(msg){$('toast').textContent=msg;$('toast').classList.remove('hidden');clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('toast').classList.add('hidden'),2600)}
-  function setAuthMode(signup){isSignup=signup;$('authTitle').textContent=signup?'Create your account':'Welcome back';$('authSubtitle').textContent=signup?'Set up your Violet Vault workspace.':'Sign in to your account tracker.';$('confirmWrap').classList.toggle('hidden',!signup);$('confirmPassword').required=signup;$('authSubmit').textContent=signup?'Create account':'Sign in';$('toggleText').textContent=signup?'Already registered?':'New here?';$('toggleAuth').textContent=signup?'Sign in':'Create an account';$('authError').textContent='';$('password').value='';$('confirmPassword').value=''}
-  $('toggleAuth').addEventListener('click',e=>{e.preventDefault();setAuthMode(!isSignup)});
-  $('authForm').addEventListener('submit',e=>{
-    e.preventDefault();const username=normalizeUsername($('telegram').value);const password=$('password').value;const db=readDB();
-    if(!/^[a-z0-9_]{5,32}$/i.test(username)){$('authError').textContent='Enter a Telegram username with 5–32 letters, numbers, or underscores.';return}
-    if(password.length<4||password.length>16){$('authError').textContent='Password must be 4–16 characters.';return}
-    if(isSignup){
-      if(password!==$('confirmPassword').value){$('authError').textContent='Password and confirmation do not match.';return}
-      if(db.users.some(u=>u.username===username)){$('authError').textContent='That username already has an account. Please sign in.';return}
-      // Demo-only password storage. Real systems must use a secure server and salted password hashing.
-      db.users.push({username,password,createdAt:today()});saveDB(db);setSession({username});enterApp();notify('Account created successfully.');
-    }else{
-      const user=db.users.find(u=>u.username===username&&u.password===password);
-      if(!user){$('authError').textContent='Username or password is incorrect.';return}
-      setSession(user);enterApp();notify('Welcome back.');
-    }
-  });
-  function enterApp(){if(!currentUsername())return;$('authView').classList.add('hidden');$('appView').classList.remove('hidden');$('currentUser').textContent='@'+currentUsername();renderAll()}
-  function logout(){sessionStorage.removeItem(SESSION_KEY);$('appView').classList.add('hidden');$('authView').classList.remove('hidden');$('telegram').value='';setAuthMode(false)}
-  $('logoutBtn').addEventListener('click',logout);
-  $('menuToggle').addEventListener('click',()=>{$('layout').classList.toggle('menu-collapsed');if(window.innerWidth<=760)$('sidebar').classList.toggle('hidden')});
-  document.querySelectorAll('#nav button').forEach(b=>b.addEventListener('click',()=>showPage(b.dataset.page)));
-  function showPage(page){document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));$('page-'+page).classList.add('active');document.querySelectorAll('#nav button').forEach(b=>b.classList.toggle('active',b.dataset.page===page));if(window.innerWidth<=760)$('sidebar').classList.add('hidden');if(page==='payout')renderPayouts();if(page==='admin')renderAdmin()}
-  const bulkMode=$('bulkMode');
-  bulkMode.addEventListener('change',()=>{
-    const same=bulkMode.value==='same';
-    $('bulkSameWrap').classList.toggle('hidden',!same);
-    $('bulkDifferentWrap').classList.toggle('hidden',same);
-    $('bulkError').textContent='';
-  });
-  let lastBulkOutput='';
-  $('runBulkEncode').addEventListener('click',()=>{
-    const count=Number($('bulkCount').value);
-    $('bulkError').textContent='';
-    if(!Number.isInteger(count)||count<1||count>500){$('bulkError').textContent='Choose a whole number from 1 to 500.';return}
-    let values=[];
-    if(bulkMode.value==='same'){
-      const value=$('bulkSameText').value;
-      if(!value){$('bulkError').textContent='Enter some dummy/test text first.';return}
-      values=Array(count).fill(value);
-    }else{
-      values=$('bulkDifferentText').value.split(/\r?\n/).map(v=>v.trim()).filter(Boolean);
-      if(values.length!==count){$('bulkError').textContent=`You selected ${count} entries but provided ${values.length} non-empty lines.`;return}
-      if(new Set(values).size!==values.length){$('bulkError').textContent='The different-text mode requires every line to be unique.';return}
-    }
-    lastBulkOutput=values.map((value,i)=>`${String(i+1).padStart(3,'0')} | ${btoa(unescape(encodeURIComponent(value)))}`).join('\n');
-    $('bulkOutput').value=lastBulkOutput;
-    $('bulkResultCount').textContent=`${count} encoded entr${count===1?'y':'ies'} ready`;
-    notify('Batch encoded in this browser only.');
-  });
-  $('clearBulk').addEventListener('click',()=>{
-    $('bulkSameText').value='';$('bulkDifferentText').value='';$('bulkOutput').value='';
-    $('bulkResultCount').textContent='No batch generated';$('bulkError').textContent='';lastBulkOutput='';
-  });
-  $('copyBulk').addEventListener('click',async()=>{
-    if(!lastBulkOutput){notify('Generate a batch first.');return}
-    try{await navigator.clipboard.writeText(lastBulkOutput);notify('Encoded results copied.')}
-    catch(e){$('bulkError').textContent='Clipboard access was blocked. Select the results and copy them manually.'}
-  });
-  $('downloadBulk').addEventListener('click',()=>{
-    if(!lastBulkOutput){notify('Generate a batch first.');return}
-    const blob=new Blob([lastBulkOutput],{type:'text/plain;charset=utf-8'}),url=URL.createObjectURL(blob),a=document.createElement('a');
-    a.href=url;a.download='bulk-encoded-test-text.txt';a.click();URL.revokeObjectURL(url);
-  });
-  $('goPayout').addEventListener('click',()=>showPage('payout'));
-  function mineAccounts(db=readDB()){return db.accounts.filter(a=>a.owner===currentUsername())}
-  function minePayouts(db=readDB()){return db.payouts.filter(p=>p.owner===currentUsername())}
-  function rate(a){return a.pinStatus==='with'?13:10}
-  $('accountForm').addEventListener('submit',e=>{
-    e.preventDefault();const ref=$('accountRef').value.trim();if(!ref){return}
-    const db=readDB();if(db.accounts.some(a=>a.owner===currentUsername()&&a.reference.toLowerCase()===ref.toLowerCase())){notify('That reference already exists in your tracker.');return}
-    db.accounts.push({id:crypto.randomUUID?crypto.randomUUID():String(Date.now()),owner:currentUsername(),reference:ref,phone:$('accountPhone').value.trim(),pinStatus:$('pinStatus').value,status:$('accountStatus').value,createdAt:today()});saveDB(db);$('accountForm').reset();renderAll();notify('Account record added.');
-  });
-  $('searchRecords').addEventListener('input',renderAccounts);
-  function statusClass(s){return s==='Success'?'success':s==='Not Accepted'?'rejected':'pending'}
-  function masked(phone){if(!phone)return'—';const digits=phone.replace(/\D/g,'');return digits.length>4?'••••••'+digits.slice(-4):'••••'}
-  function renderAccounts(){
-    const db=readDB(),list=mineAccounts(db),q=$('searchRecords').value.toLowerCase();const filtered=list.filter(a=>a.reference.toLowerCase().includes(q));$('recordCount').textContent=`${list.length} record${list.length===1?'':'s'}`;$('accountRows').innerHTML=filtered.map(a=>`<tr><td><strong>${safe(a.reference)}</strong></td><td>${safe(masked(a.phone))}</td><td>${a.pinStatus==='with'?'With PIN':'Without PIN'}</td><td>${money(rate(a))}</td><td><span class="pill ${statusClass(a.status)}">${safe(a.status)}</span></td><td>${new Date(a.createdAt).toLocaleDateString()}</td><td><button class="secondary" data-delete-account="${safe(a.id)}">Delete</button></td></tr>`).join('');$('emptyAccounts').classList.toggle('hidden',filtered.length>0);
-    document.querySelectorAll('[data-delete-account]').forEach(b=>b.addEventListener('click',()=>{const d=readDB();d.accounts=d.accounts.filter(a=>a.id!==b.dataset.deleteAccount||a.owner!==currentUsername());saveDB(d);renderAll();notify('Record deleted.')}));
+const DEFAULT_API='https://script.google.com/macros/s/AKfycbxXv-4BKY97mob6-Rn-4Bc6KYLhfDE2eip90yRxXuAXPTOGdvDFfLtaWB3UJzAjux6Z7Q/exec';
+const $=id=>document.getElementById(id);
+let records=[],payouts=[],currentUser='',toastTimer;
+
+function toast(msg){
+  $('toast').textContent=msg;
+  $('toast').classList.remove('hidden');
+  clearTimeout(toastTimer);
+  toastTimer=setTimeout(()=>$('toast').classList.add('hidden'),3200);
+}
+function getApi(){return localStorage.getItem('vv_api')||DEFAULT_API}
+function getUsers(){
+  try{return JSON.parse(localStorage.getItem('vv_users')||'{}')}
+  catch{return {}}
+}
+function setUsers(v){localStorage.setItem('vv_users',JSON.stringify(v))}
+function showAuth(){
+  $('authView').classList.remove('hidden');
+  $('appView').classList.add('hidden');
+}
+function showApp(user){
+  currentUser=user;
+  $('currentUser').textContent=user.startsWith('@')?user:'@'+user;
+  $('authView').classList.add('hidden');
+  $('appView').classList.remove('hidden');
+  navigate('dashboard');
+  loadLocal();
+  updateDashboard();
+}
+function validUser(s){return /^@?[A-Za-z0-9_]{3,32}$/.test(s.trim())}
+
+$('showSignup').onclick=()=>{
+  $('loginFields').classList.add('hidden');
+  $('signupFields').classList.remove('hidden');
+};
+$('showLogin').onclick=()=>{
+  $('signupFields').classList.add('hidden');
+  $('loginFields').classList.remove('hidden');
+};
+$('signupBtn').onclick=()=>{
+  const u=$('signupUser').value.trim();
+  const p=$('signupPass').value;
+  const c=$('signupConfirm').value;
+  if(!validUser(u))return toast('Enter a valid Telegram username.');
+  if(p.length<4||p.length>16)return toast('Password must be 4–16 characters.');
+  if(p!==c)return toast('Passwords do not match.');
+  const users=getUsers();
+  const key=u.toLowerCase().replace(/^@/,'');
+  if(users[key])return toast('That username already exists in this browser.');
+  users[key]={display:u,password:p};
+  setUsers(users);
+  toast('Account created. Please log in.');
+  $('signupUser').value='';
+  $('signupPass').value='';
+  $('signupConfirm').value='';
+  $('showLogin').click();
+};
+$('loginBtn').onclick=()=>{
+  const u=$('loginUser').value.trim();
+  const p=$('loginPass').value;
+  const key=u.toLowerCase().replace(/^@/,'');
+  const user=getUsers()[key];
+  if(!validUser(u)||!user||user.password!==p)
+    return toast('Username or password is incorrect on this browser.');
+  showApp(user.display);
+};
+$('logoutBtn').onclick=()=>{
+  currentUser='';
+  showAuth();
+};
+$('menuToggle').onclick=()=>$('sidebar').classList.toggle('open');
+
+function navigate(id){
+  document.querySelectorAll('.section').forEach(s=>s.classList.toggle('active',s.id===id));
+  document.querySelectorAll('.nav').forEach(b=>b.classList.toggle('active',b.dataset.section===id));
+  $('sidebar').classList.remove('open');
+}
+document.querySelectorAll('.nav').forEach(b=>b.onclick=()=>navigate(b.dataset.section));
+
+function loadLocal(){
+  try{records=JSON.parse(localStorage.getItem('vv_records')||'[]')}
+  catch{records=[]}
+  try{payouts=JSON.parse(localStorage.getItem('vv_payouts')||'[]')}
+  catch{payouts=[]}
+  renderRecords();
+  renderPayouts();
+}
+function saveLocal(){
+  localStorage.setItem('vv_records',JSON.stringify(records));
+  localStorage.setItem('vv_payouts',JSON.stringify(payouts));
+}
+function statusClass(s){return String(s||'Pending').replace(/\s+/g,'-')}
+function maskPhone(p){
+  const s=String(p||'');
+  return s.length>4?'••••••'+s.slice(-4):s;
+}
+function escapeHtml(v){
+  return String(v??'').replace(/[&<>"']/g,c=>({
+    '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+  }[c]));
+}
+function renderRecords(){
+  const q=$('searchRecords').value.trim().toLowerCase();
+  const filtered=records.filter(r=>(r.id+' '+r.phone).toLowerCase().includes(q));
+  $('recordsBody').innerHTML=filtered.map(r=>`
+    <tr>
+      <td title="${escapeHtml(r.id)}">${escapeHtml(r.id.slice(0,8))}…</td>
+      <td>${escapeHtml(maskPhone(r.phone))}</td>
+      <td>${r.pinPresent?'Yes':'No'}</td>
+      <td><span class="pill ${statusClass(r.status)}">${escapeHtml(r.status)}</span></td>
+      <td>${escapeHtml(r.date||'')}</td>
+    </tr>`).join('');
+  $('emptyRecords').classList.toggle('hidden',filtered.length>0);
+  $('recordCount').textContent=`${filtered.length} record${filtered.length===1?'':'s'}`;
+}
+$('recordForm').onsubmit=async e=>{
+  e.preventDefault();
+  const phone=$('phone').value.trim();
+  const pinPresent=$('pinPresent').value;
+  if(!phone||!pinPresent)return toast('Complete the required fields.');
+  $('submitBtn').disabled=true;
+  $('submitBtn').textContent='Submitting…';
+  try{
+    const res=await fetch(getApi(),{
+      method:'POST',
+      headers:{'Content-Type':'text/plain;charset=utf-8'},
+      body:JSON.stringify({phone,pinPresent:pinPresent==='yes'})
+    });
+    const data=await res.json();
+    if(!data.success)throw new Error(data.message||'Submission failed');
+    const record={
+      id:data.submissionId,
+      phone,
+      pinPresent:pinPresent==='yes',
+      status:data.status||'Pending',
+      date:new Date().toLocaleString()
+    };
+    records.unshift(record);
+    saveLocal();
+    renderRecords();
+    updateDashboard();
+    $('recordForm').reset();
+    toast('Submitted successfully. ID: '+String(data.submissionId||'').slice(0,8));
+  }catch(err){
+    toast('Could not submit. Check your internet and backend deployment.');
+  }finally{
+    $('submitBtn').disabled=false;
+    $('submitBtn').textContent='＋ Submit record';
   }
-  $('exportTxt').addEventListener('click',()=>{
-    const list=mineAccounts();const body=['VIOLET VAULT — ACCOUNT TRACKER EXPORT','Exported: '+new Date().toLocaleString(),'Sensitive account passwords and PINs are not stored or exported.','',...list.map((a,i)=>`${i+1}. Reference: ${a.reference}\n   Phone: ${masked(a.phone)}\n   PIN status: ${a.pinStatus==='with'?'With PIN':'Without PIN'}\n   Rate: ${money(rate(a))}\n   Status: ${a.status}\n   Submitted: ${new Date(a.createdAt).toLocaleString()}`)].join('\n');
-    const blob=new Blob([body],{type:'text/plain;charset=utf-8'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='violet-vault-accounts.txt';a.click();URL.revokeObjectURL(url);notify('TXT export downloaded.');
+};
+$('searchRecords').oninput=renderRecords;
+$('exportBtn').onclick=()=>{
+  const lines=[
+    'Submission ID\tPhone (masked)\tPIN present\tReview status\tSubmitted',
+    ...records.map(r=>[r.id,maskPhone(r.phone),r.pinPresent?'Yes':'No',r.status,r.date].join('\t'))
+  ];
+  downloadText('violet-vault-records.txt',lines.join('\n'));
+};
+function downloadText(name,text){
+  const blob=new Blob([text],{type:'text/plain;charset=utf-8'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url;
+  a.download=name;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+$('noPinCount').oninput=calc;
+$('withPinCount').oninput=calc;
+function calc(){
+  const a=Math.max(0,Math.floor(Number($('noPinCount').value)||0));
+  const b=Math.max(0,Math.floor(Number($('withPinCount').value)||0));
+  $('earningsTotal').textContent=(a*10+b*13).toLocaleString('en-PH',{
+    style:'currency',currency:'PHP'
   });
-  function svgEl(w,h,inner){return `<svg viewBox="0 0 ${w} ${h}" role="img" aria-label="Dashboard chart">${inner}</svg>`}
-  function renderTrend(list){
-    const days=[];for(let i=6;i>=0;i--){const d=new Date();d.setHours(0,0,0,0);d.setDate(d.getDate()-i);days.push(d)}
-    const vals=days.map(d=>list.filter(a=>{const x=new Date(a.createdAt);return x.toDateString()===d.toDateString()}).length),max=Math.max(1,...vals),w=320,h=190,pad=28;
-    let inner='';for(let i=0;i<4;i++){const y=pad+i*(h-2*pad)/3;inner+=`<line x1="${pad}" y1="${y}" x2="${w-pad}" y2="${y}" stroke="#ffffff18"/>`}
-    const pts=vals.map((v,i)=>[pad+i*(w-2*pad)/6,h-pad-(v/max)*(h-2*pad)]);inner+=`<polygon points="${pad},${h-pad} ${pts.map(p=>p.join(',')).join(' ')} ${w-pad},${h-pad}" fill="#a78bfa" opacity=".15"/>`;inner+=`<polyline points="${pts.map(p=>p.join(',')).join(' ')}" fill="none" stroke="#a78bfa" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>`;pts.forEach((p,i)=>inner+=`<circle cx="${p[0]}" cy="${p[1]}" r="4" fill="#e879f9"><title>${vals[i]} submissions</title></circle><text x="${p[0]}" y="${h-7}" text-anchor="middle" font-size="10" fill="#b7a9ce">${['S','M','T','W','T','F','S'][days[i].getDay()]}</text>`);return svgEl(w,h,inner)
-  }
-  function renderDonut(values,colors,labels){
-    const total=values.reduce((a,b)=>a+b,0);let angle=-90,parts='';values.forEach((v,i)=>{if(!v||!total)return;const next=angle+v/total*360;const r=63,cx=100,cy=92;const xy=a=>[cx+r*Math.cos(a*Math.PI/180),cy+r*Math.sin(a*Math.PI/180)];const p1=xy(angle),p2=xy(next);const large=next-angle>180?1:0;parts+=`<path d="M ${cx} ${cy} L ${p1[0]} ${p1[1]} A ${r} ${r} 0 ${large} 1 ${p2[0]} ${p2[1]} Z" fill="${colors[i]}" stroke="#171127" stroke-width="2"/>`;angle=next});if(total===0)parts='<circle cx="100" cy="92" r="63" fill="#302348"/>';parts+=`<circle cx="100" cy="92" r="39" fill="#1a1329"/><text x="100" y="88" fill="#fff" font-size="22" font-weight="800" text-anchor="middle">${total}</text><text x="100" y="105" fill="#b7a9ce" font-size="10" text-anchor="middle">TOTAL</text>`;return svgEl(200,184,parts)
-  }
-  function renderHome(){
-    const list=mineAccounts();const success=list.filter(a=>a.status==='Success').length,rejected=list.filter(a=>a.status==='Not Accepted').length,withPin=list.filter(a=>a.pinStatus==='with').length,without=list.length-withPin;
-    $('statTotal').textContent=list.length;$('statSuccess').textContent=success;$('statRejected').textContent=rejected;$('statWithPin').textContent=withPin;$('statWithoutPin').textContent=without;
-    $('trendChart').innerHTML=renderTrend(list);$('statusChart').innerHTML=renderDonut([success,list.filter(a=>a.status==='Pending').length,rejected],['#86efac','#fcd34d','#fda4af']);$('pinChart').innerHTML=renderDonut([withPin,without],['#e879f9','#8b5cf6']);
-  }
-  function renderCalculator(){const list=mineAccounts(),w=list.filter(a=>a.pinStatus==='with').length,wo=list.length-w,total=w*13+wo*10;$('calcWithout').textContent=`${wo} × ₱10 = ${money(wo*10)}`;$('calcWith').textContent=`${w} × ₱13 = ${money(w*13)}`;$('calcCount').textContent=list.length;$('calcTotal').textContent=money(total);$('availableAmount').textContent=money(total);$('payoutAmount').max=total}
-  $('payoutForm').addEventListener('submit',e=>{
-    e.preventDefault();const num=$('gcashNumber').value.trim(),name=$('gcashName').value.trim(),amount=Number($('payoutAmount').value);const available=mineAccounts().reduce((sum,a)=>sum+rate(a),0);
-    $('payoutError').textContent='';if(!/^[0-9+\-() ]{7,20}$/.test(num)){$('payoutError').textContent='Enter a valid GCash number.';return}if(!name){$('payoutError').textContent='Enter the GCash account name.';return}if(!Number.isInteger(amount)||amount<1||amount>available){$('payoutError').textContent=`Amount must be between ₱1 and ${money(available)}.`;return}
-    const db=readDB();db.payouts.push({id:crypto.randomUUID?crypto.randomUUID():String(Date.now()),owner:currentUsername(),gcashNumber:num,gcashName:name,amount,status:'Pending review',createdAt:today()});saveDB(db);$('payoutForm').reset();$('payoutConfirmation').textContent='Please wait for the admin to review your payout request, thank you for your patience!';renderAll();notify('Payout request submitted.');
+}
+$('payoutForm').onsubmit=e=>{
+  e.preventDefault();
+  const item={
+    name:$('gcashName').value.trim(),
+    number:maskPhone($('gcashNumber').value.trim()),
+    amount:Math.max(0,Number($('payoutAmount').value)||0),
+    date:new Date().toLocaleString(),
+    status:'For admin review'
+  };
+  if(!item.name||!item.number||item.amount<1)
+    return toast('Please complete payout details.');
+  payouts.unshift(item);
+  saveLocal();
+  renderPayouts();
+  $('payoutForm').reset();
+  toast('Please wait for the admin to review your payout request, thank you for your patience!');
+};
+function renderPayouts(){
+  $('payoutHistory').innerHTML=payouts.length?payouts.map(p=>`
+    <div style="padding:12px 0;border-bottom:1px solid var(--line)">
+      <b>₱${Number(p.amount).toLocaleString('en-PH')}</b> · ${escapeHtml(p.status)}
+      <div class="muted small">${escapeHtml(p.date)} · ${escapeHtml(p.number)}</div>
+    </div>`).join(''):'No requests yet.';
+}
+function chart(el,items){
+  const max=Math.max(1,...items.map(i=>i.value));
+  $(el).innerHTML=items.map(i=>`
+    <div class="chart-col">
+      <div class="chart-bar" style="height:${Math.max(3,(i.value/max)*105)}px" title="${i.value}"></div>
+      <b class="small">${i.value}</b>
+      <span class="chart-label">${escapeHtml(i.label)}</span>
+    </div>`).join('');
+}
+function updateDashboard(){
+  const total=records.length;
+  const success=records.filter(r=>r.status==='Success').length;
+  const rejected=records.filter(r=>r.status==='Not Accepted').length;
+  const pending=records.filter(r=>r.status==='Pending').length;
+  const yes=records.filter(r=>r.pinPresent).length;
+  const no=total-yes;
+  $('statTotal').textContent=total;
+  $('statSuccess').textContent=success;
+  $('statRejected').textContent=rejected;
+  $('statPending').textContent=pending;
+  $('statPinYes').textContent=yes;
+  $('statPinNo').textContent=no;
+  chart('statusChart',[
+    {label:'Pending',value:pending},
+    {label:'Success',value:success},
+    {label:'Rejected',value:rejected}
+  ]);
+  chart('pinChart',[
+    {label:'With PIN',value:yes},
+    {label:'No PIN',value:no}
+  ]);
+  const dates={};
+  records.slice(0,60).forEach(r=>{
+    const d=(r.date||'').split(',')[0]||'Recent';
+    dates[d]=(dates[d]||0)+1;
   });
-  function renderPayouts(){const list=minePayouts();$('myPayoutRows').innerHTML=list.map(p=>`<tr><td>${money(p.amount)}</td><td><span class="pill ${p.status==='Approved'?'success':p.status==='Rejected'?'rejected':'pending'}">${safe(p.status)}</span></td><td>${new Date(p.createdAt).toLocaleDateString()}</td></tr>`).join('');$('emptyPayouts').classList.toggle('hidden',list.length>0)}
-  function renderAdmin(){
-    const db=readDB();$('adminAccountRows').innerHTML=db.accounts.map(a=>`<tr><td>@${safe(a.owner)}</td><td>${safe(a.reference)}</td><td>${a.pinStatus==='with'?'With PIN':'Without PIN'}</td><td><select class="inline-select" data-account-status="${safe(a.id)}"><option ${a.status==='Pending'?'selected':''}>Pending</option><option ${a.status==='Success'?'selected':''}>Success</option><option ${a.status==='Not Accepted'?'selected':''}>Not Accepted</option></select></td></tr>`).join('');$('emptyAdminAccounts').classList.toggle('hidden',db.accounts.length>0);
-    $('adminPayoutRows').innerHTML=db.payouts.map(p=>`<tr><td>@${safe(p.owner)}</td><td>${safe(p.gcashName)}</td><td>${safe(masked(p.gcashNumber))}</td><td>${money(p.amount)}</td><td><select class="inline-select" data-payout-status="${safe(p.id)}"><option ${p.status==='Pending review'?'selected':''}>Pending review</option><option ${p.status==='Approved'?'selected':''}>Approved</option><option ${p.status==='Rejected'?'selected':''}>Rejected</option></select></td></tr>`).join('');$('emptyAdminPayouts').classList.toggle('hidden',db.payouts.length>0);
-    document.querySelectorAll('[data-account-status]').forEach(sel=>sel.addEventListener('change',()=>{const d=readDB(),a=d.accounts.find(x=>x.id===sel.dataset.accountStatus);if(a){a.status=sel.value;saveDB(d);renderAll();notify('Account status updated.')}}));
-    document.querySelectorAll('[data-payout-status]').forEach(sel=>sel.addEventListener('change',()=>{const d=readDB(),p=d.payouts.find(x=>x.id===sel.dataset.payoutStatus);if(p){p.status=sel.value;saveDB(d);renderAll();notify('Payout status updated.')}}));
+  const latest=Object.entries(dates).slice(0,6).reverse();
+  chart('activityChart',latest.length?latest.map(([label,value])=>({label,value})):[{label:'No data',value:0}]);
+}
+$('checkConnection').onclick=()=>testEndpoint(true);
+$('testApi').onclick=()=>testEndpoint(false);
+async function testEndpoint(showNotice){
+  $('apiTestResult').textContent='Checking…';
+  try{
+    const res=await fetch(getApi());
+    const data=await res.json();
+    const ok=!!data.success;
+    $('apiTestResult').textContent=ok?'Connected: '+(data.message||'Backend responded.'):'Backend responded but reported a problem.';
+    $('connectionNotice').textContent=ok?'Backend connection successful.':'Backend responded but needs attention.';
+    if(ok)toast('Backend connection successful.');
+  }catch(e){
+    $('apiTestResult').textContent='Could not check endpoint from this browser. Cross-origin restrictions may prevent the check.';
+    $('connectionNotice').textContent='Connection test inconclusive. Try a test submission.';
+    if(showNotice)toast('Connection check inconclusive.');
   }
-  function renderAll(){renderHome();renderAccounts();renderCalculator();renderPayouts();if($('page-admin').classList.contains('active'))renderAdmin()}
-  if(currentUsername()&&readDB().users.some(u=>u.username===currentUsername()))enterApp();else setAuthMode(false);
-})();
+}
+$('saveApi').onclick=()=>{
+  const u=$('apiUrl').value.trim();
+  if(!u.startsWith('https://script.google.com/macros/s/')||!u.endsWith('/exec'))
+    return toast('Enter a valid Apps Script /exec URL.');
+  localStorage.setItem('vv_api',u);
+  toast('Endpoint saved in this browser.');
+};
+$('refreshBtn').onclick=()=>{
+  loadLocal();
+  updateDashboard();
+  testEndpoint(true);
+};
+if(sessionStorage.getItem('vv_session')){
+  showApp(sessionStorage.getItem('vv_session'));
+}else{
+  showAuth();
+}
 </script>
 </body>
 </html>
